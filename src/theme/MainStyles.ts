@@ -3,11 +3,13 @@ type MainStylesType = {
     primary: string;
     secundary: string;
     tertiary: string;
+    quartiary: string;
   };
   text: {
     color: {
       primary: string;
       secundary: string;
+      white: string;
     };
     size: {
       title: string;
@@ -25,11 +27,13 @@ export const MainStyles: MainStylesType = {
     primary: '#F8F0E5',
     secundary: '#EADBC8',
     tertiary: '#DAC0A3',
+    quartiary: '#0F2C59',
   },
   text: {
     color: {
       primary: '#000',
       secundary: '#DDD',
+      white: '#FFF',
     },
     size: {
       title: '28px',
