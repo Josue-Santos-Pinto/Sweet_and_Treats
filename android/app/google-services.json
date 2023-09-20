@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "157329619023",
+    "project_id": "sweet-and-treats",
+    "storage_bucket": "sweet-and-treats.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:157329619023:android:d74135e618c614d790923a",
+        "android_client_info": {
+          "package_name": "com.sweets_and_treats"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLnh6RYn03osa2LgquxyHGoSvW_URkOzg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

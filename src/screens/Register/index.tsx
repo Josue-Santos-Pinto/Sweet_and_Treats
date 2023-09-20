@@ -11,6 +11,7 @@ import * as yup from 'yup';
 import SwitchLoginRegister from '../../components/SwitchLoginRegister';
 import { useNavigation } from '@react-navigation/native';
 import SlashedOr from '../../components/SlashedOr';
+import { createUser } from '../../services/CreateUser';
 
 type FormDataProps = {
   email: string;
@@ -18,7 +19,7 @@ type FormDataProps = {
   password_confirm: string;
 };
 
-const LoginSchema = yup.object({
+const RegisterSchema = yup.object({
   email: yup.string().required('Informe o email').email('Email invalido'),
   password: yup
     .string()
@@ -37,11 +38,11 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormDataProps>({
-    resolver: yupResolver(LoginSchema),
+    resolver: yupResolver(RegisterSchema),
   });
 
-  function handleLogin(data: FormDataProps) {
-    console.log(data);
+  function handleRegister(data: FormDataProps) {
+    createUser(data.email, data.password);
   }
 
   const navigation = useNavigation();
@@ -104,7 +105,7 @@ export default function Register() {
           )}
         </InputArea>
 
-        <Button title="Cadastrar-se" onPress={handleSubmit(handleLogin)} />
+        <Button title="Cadastrar-se" onPress={handleSubmit(handleRegister)} />
         <SlashedOr />
         <AuthOptions />
         <SwitchLoginRegister

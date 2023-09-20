@@ -19,6 +19,7 @@ import * as yup from 'yup';
 import SwitchLoginRegister from '../../components/SwitchLoginRegister';
 import { useNavigation } from '@react-navigation/native';
 import SlashedOr from '../../components/SlashedOr';
+import { SignIn } from '../../services/SignIn';
 
 type FormDataProps = {
   email: string;
@@ -44,7 +45,7 @@ export default function Login() {
   });
 
   function handleLogin(data: FormDataProps) {
-    console.log(data);
+    SignIn(data.email, data.password);
   }
   const navigation = useNavigation();
 

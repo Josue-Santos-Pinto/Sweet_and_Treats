@@ -1,14 +1,15 @@
 import { StatusBar } from 'react-native';
 import React from 'react';
-import { MainStack } from './src/routes/MainStack';
+import { AuthStack } from './src/routes/AuthStack';
 import { NavigationContainer } from '@react-navigation/native';
 import { MainStyles } from './src/theme/MainStyles';
+import { MainDrawer } from './src/routes/MainDrawer';
 
 const App = () => {
   return (
     <NavigationContainer>
       <StatusBar barStyle={'dark-content'} backgroundColor={MainStyles.background.primary} />
-      <MainStack />
+      <AuthStack />
     </NavigationContainer>
   );
 };
