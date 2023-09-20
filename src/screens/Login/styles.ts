@@ -12,17 +12,20 @@ export const Container = styled.View`
 `;
 export const FormArea = styled.View`
   flex: 1;
-
   align-items: center;
 `;
 
 export const InputArea = styled.View`
   width: 90%;
-  margin: 10px auto;
+  margin: 6px auto;
 `;
 
 export const TextError = styled.Text`
   color: red;
+`;
+export const PasswordForgotButton = styled.TouchableOpacity``;
+export const PasswordForgotText = styled.Text`
+  text-decoration: underline;
 `;
 export const Input = styled.TextInput<InputType>`
   width: 100%;

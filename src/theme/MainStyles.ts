@@ -32,13 +32,13 @@ export const MainStyles: MainStylesType = {
   text: {
     color: {
       primary: '#000',
-      secundary: '#DDD',
+      secundary: '#212121',
       white: '#FFF',
     },
     size: {
       title: '28px',
-      subtitle: '10px',
-      small: '6px',
+      subtitle: '16px',
+      small: '12px',
     },
     family: {
       waterbrush: 'WaterBrush-Regular',
