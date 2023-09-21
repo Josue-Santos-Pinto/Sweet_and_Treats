@@ -4,7 +4,7 @@ import { ButtonText, Container } from './styles';
 
 type ButtonType = {
   title: string;
-  onPress: () => {};
+  onPress: () => any;
 };
 
 const Button = ({ title, onPress }: ButtonType) => {

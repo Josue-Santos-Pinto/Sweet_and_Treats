@@ -1,10 +1,13 @@
+import React from 'react';
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 
-export const Logout = () => {
-  const navigation = useNavigation();
-
+const Logout = () => {
   auth()
     .signOut()
-    .then(() => navigation.reset({ index: 1, routes: [{ name: 'Login' }] }));
+    .then(() => {
+      return true;
+    });
 };
+
+export default Logout;

@@ -19,7 +19,7 @@ import * as yup from 'yup';
 import SwitchLoginRegister from '../../components/SwitchLoginRegister';
 import { useNavigation } from '@react-navigation/native';
 import SlashedOr from '../../components/SlashedOr';
-import { SignIn } from '../../services/SignIn';
+import SignIn from '../../services/SignIn';
 
 type FormDataProps = {
   email: string;
@@ -36,6 +36,8 @@ const LoginSchema = yup.object({
 });
 
 export default function Login() {
+  const navigation = useNavigation();
+
   const {
     control,
     handleSubmit,
@@ -44,10 +46,16 @@ export default function Login() {
     resolver: yupResolver(LoginSchema),
   });
 
-  function handleLogin(data: FormDataProps) {
-    SignIn(data.email, data.password);
+  async function handleLogin(data: FormDataProps) {
+    SignIn(data.email, data.password)
+      .then((uid) => {
+        console.log(uid);
+        if (uid) navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
-  const navigation = useNavigation();
 
   return (
     <Container>

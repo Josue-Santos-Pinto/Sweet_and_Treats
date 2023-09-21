@@ -1,23 +1,30 @@
 import auth from '@react-native-firebase/auth';
-import { useNavigation } from '@react-navigation/native';
+import { Alert } from 'react-native';
 
-export const createUser = (email: string, password: string) => {
-  const navigation = useNavigation();
-
-  auth()
+const CreateUser = async (email: string, password: string) => {
+  return auth()
     .createUserWithEmailAndPassword(email, password)
-    .then(() => {
-      navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
+    .then((userCredential) => {
+      const uid = userCredential.user.uid;
+      return uid;
     })
     .catch((error) => {
-      if (error.code === 'auth/email-already-in-use') {
-        console.log('Esse email já está em uso');
-      }
+      const erroCode = `auth/${error.code.split('/')[1]}`;
 
-      if (error.code === 'auth/invalid-email') {
-        console.log('Email inválido');
+      switch (erroCode) {
+        case 'auth/user-not-found':
+          Alert.alert('Erro de Login', 'Usuário não encontrado. Verifique o email.');
+          break;
+        case 'auth/invalid-login':
+          Alert.alert('Erro de Login', 'Email e/ou Senha incorretos.');
+          break;
+        case 'auth/too-many-requests':
+          Alert.alert('Erro de Login', 'Muitas tentativas de login. Tente novamente mais tarde.');
+          break;
+        default:
+          Alert.alert('Erro de Login', 'Ocorreu um erro desconhecido. Tente novamente.');
       }
-
-      console.error(error);
+      throw error; // Lança o erro novamente se necessário
     });
 };
+export default CreateUser;

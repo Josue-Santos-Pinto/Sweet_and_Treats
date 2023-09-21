@@ -8,7 +8,6 @@ type SwitchLoginRegisterType = {
 };
 
 function SwitchLoginRegister({ phrase, buttonText, onPress }: SwitchLoginRegisterType) {
-  console.log('renderizou');
   return (
     <GoTo>
       <Phrase>{phrase}</Phrase>

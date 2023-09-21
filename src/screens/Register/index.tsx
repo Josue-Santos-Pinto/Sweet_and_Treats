@@ -11,7 +11,7 @@ import * as yup from 'yup';
 import SwitchLoginRegister from '../../components/SwitchLoginRegister';
 import { useNavigation } from '@react-navigation/native';
 import SlashedOr from '../../components/SlashedOr';
-import { createUser } from '../../services/CreateUser';
+import CreateUser from '../../services/CreateUser';
 
 type FormDataProps = {
   email: string;
@@ -42,7 +42,14 @@ export default function Register() {
   });
 
   function handleRegister(data: FormDataProps) {
-    createUser(data.email, data.password);
+    CreateUser(data.email, data.password)
+      .then((uid) => {
+        console.log(uid);
+        if (uid) navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   const navigation = useNavigation();

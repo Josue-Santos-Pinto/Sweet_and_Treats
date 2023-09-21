@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import { OtherOption, OtherOptionText, Slash } from './styles';
 
 function SlashedOr() {
-  console.log('renderizou');
   return (
     <OtherOption>
       <Slash />
