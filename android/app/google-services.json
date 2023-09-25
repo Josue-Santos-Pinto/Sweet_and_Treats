@@ -12,7 +12,20 @@
           "package_name": "com.sweets_and_treats"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "157329619023-259v7vj9bhedvegne6215nqhsps0qm5s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sweets_and_treats",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "157329619023-6oo3eioqss34vfur48afj82eg7us31rl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDLnh6RYn03osa2LgquxyHGoSvW_URkOzg"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "157329619023-6oo3eioqss34vfur48afj82eg7us31rl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
