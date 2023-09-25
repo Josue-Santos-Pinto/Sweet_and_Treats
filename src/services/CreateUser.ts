@@ -24,7 +24,6 @@ const CreateUser = async (email: string, password: string) => {
         default:
           Alert.alert('Erro de Login', 'Ocorreu um erro desconhecido. Tente novamente.');
       }
-      throw error; // Lança o erro novamente se necessário
     });
 };
 export default CreateUser;

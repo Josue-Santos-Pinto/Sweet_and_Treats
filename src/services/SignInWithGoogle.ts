@@ -1,6 +1,7 @@
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { WEB_CLIENT_ID } from '../helpers';
+import { Alert } from 'react-native';
 
 GoogleSignin.configure({
   webClientId: WEB_CLIENT_ID,
@@ -28,6 +29,7 @@ async function onGoogleButtonPress() {
       // play services not available or outdated
     } else {
       // some other error happened
+      Alert.alert('Erro de Login', 'Ocorreu um erro desconhecido. Tente novamente.');
     }
   }
 }

@@ -37,3 +37,11 @@ export const Input = styled.TextInput<InputType>`
   border-radius: 10px;
   padding: 12px;
 `;
+
+export const ModalBody = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  padding-horizontal: 20px;
+  background-color: ${MainStyles.background.primary};
+`;

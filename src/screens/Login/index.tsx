@@ -4,6 +4,7 @@ import {
   FormArea,
   Input,
   InputArea,
+  ModalBody,
   PasswordForgotButton,
   PasswordForgotText,
   TextError,
@@ -25,6 +26,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { WEB_CLIENT_ID } from '../../helpers';
 import ResetPassword from '../../services/ResetPassword';
 import { Modal } from 'react-native';
+import CloseButton from '../../components/CloseButton';
 
 type FormDataProps = {
   email: string;
@@ -64,6 +66,10 @@ export default function Login() {
         console.log(err);
       });
   }
+  const handleResetPassword = () => {
+    let hasError = ResetPassword(resetEmail);
+    console.log(hasError);
+  };
 
   return (
     <Container>
@@ -131,13 +137,16 @@ export default function Login() {
         transparent={false}
         onRequestClose={() => setModalVisible(false)}
       >
-        <Input
-          placeholder="Email"
-          onChangeText={(e: string) => setResetEmail(e)}
-          maxLength={30}
-          keyboardType="email-address"
-        />
-        <Button title="Resetar Senha" onPress={() => ResetPassword(resetEmail)} />
+        <ModalBody>
+          <CloseButton onPress={() => setModalVisible(false)} />
+          <Input
+            placeholder="Email"
+            onChangeText={(e: string) => setResetEmail(e)}
+            maxLength={30}
+            keyboardType="email-address"
+          />
+          <Button title="Resetar Senha" onPress={handleResetPassword} />
+        </ModalBody>
       </Modal>
     </Container>
   );

@@ -28,6 +28,7 @@
     "react-native-screens": "^3.25.0",
     "react-native-svg": "^13.13.0",
     "react-native-svg-transformer": "^1.1.0",
+    "react-native-vector-icons": "^10.0.0",
     "styled-components": "^6.0.8",
     "yup": "^1.2.0"
   },
@@ -39,6 +40,7 @@
     "@react-native/metro-config": "^0.72.11",
     "@tsconfig/react-native": "^3.0.0",
     "@types/react": "^18.0.24",
+    "@types/react-native-vector-icons": "^6.4.14",
     "@types/react-test-renderer": "^18.0.0",
     "@types/styled-components": "^5.1.27",
     "@types/styled-components-react-native": "^5.2.1",
