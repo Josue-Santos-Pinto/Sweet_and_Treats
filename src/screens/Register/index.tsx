@@ -12,6 +12,9 @@ import SwitchLoginRegister from '../../components/SwitchLoginRegister';
 import { useNavigation } from '@react-navigation/native';
 import SlashedOr from '../../components/SlashedOr';
 import CreateUser from '../../services/CreateUser';
+import { MainStyles } from '../../theme/MainStyles';
+import onGoogleButtonPress from '../../services/SignInWithGoogle';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 type FormDataProps = {
   email: string;
@@ -66,6 +69,7 @@ export default function Register() {
             render={({ field: { onChange } }) => (
               <Input
                 placeholder="Email"
+                placeholderTextColor={MainStyles.text.color.placeholders}
                 onChangeText={onChange}
                 maxLength={30}
                 hasError={errors.email?.message}
@@ -83,6 +87,7 @@ export default function Register() {
             render={({ field: { onChange } }) => (
               <Input
                 placeholder="Senha"
+                placeholderTextColor={MainStyles.text.color.placeholders}
                 onChangeText={onChange}
                 maxLength={12}
                 secureTextEntry
@@ -100,6 +105,7 @@ export default function Register() {
             render={({ field: { onChange } }) => (
               <Input
                 placeholder="Confirmar Senha"
+                placeholderTextColor={MainStyles.text.color.placeholders}
                 onChangeText={onChange}
                 maxLength={12}
                 secureTextEntry
@@ -114,7 +120,15 @@ export default function Register() {
 
         <Button title="Cadastrar-se" onPress={handleSubmit(handleRegister)} />
         <SlashedOr />
-        <AuthOptions />
+        <AuthOptions
+          onPress={() =>
+            onGoogleButtonPress().then(async () => {
+              if ((await GoogleSignin.getCurrentUser()) !== null) {
+                navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
+              }
+            })
+          }
+        />
         <SwitchLoginRegister
           phrase="Já possui uma conta?"
           buttonText="Fazer Login"

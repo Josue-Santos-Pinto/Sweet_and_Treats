@@ -9,6 +9,7 @@ type MainStylesType = {
     color: {
       primary: string;
       secundary: string;
+      placeholders: string;
       white: string;
     };
     size: {
@@ -33,6 +34,7 @@ export const MainStyles: MainStylesType = {
     color: {
       primary: '#000',
       secundary: '#212121',
+      placeholders: '#CCC',
       white: '#FFF',
     },
     size: {

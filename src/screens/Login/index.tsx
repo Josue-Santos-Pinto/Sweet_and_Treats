@@ -27,6 +27,7 @@ import { WEB_CLIENT_ID } from '../../helpers';
 import ResetPassword from '../../services/ResetPassword';
 import { Modal } from 'react-native';
 import CloseButton from '../../components/CloseButton';
+import { MainStyles } from '../../theme/MainStyles';
 
 type FormDataProps = {
   email: string;
@@ -85,6 +86,7 @@ export default function Login() {
                 placeholder="Email"
                 onChangeText={onChange}
                 maxLength={30}
+                placeholderTextColor={MainStyles.text.color.placeholders}
                 hasError={errors.email?.message}
                 keyboardType="email-address"
               />
@@ -102,6 +104,7 @@ export default function Login() {
                 placeholder="Senha"
                 onChangeText={onChange}
                 maxLength={12}
+                placeholderTextColor={MainStyles.text.color.placeholders}
                 secureTextEntry
                 hasError={errors.password?.message}
               />

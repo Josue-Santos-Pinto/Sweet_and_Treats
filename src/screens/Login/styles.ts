@@ -25,6 +25,7 @@ export const TextError = styled.Text`
 `;
 export const PasswordForgotButton = styled.TouchableOpacity``;
 export const PasswordForgotText = styled.Text`
+  color: ${MainStyles.text.color.secundary};
   text-decoration: underline;
 `;
 export const Input = styled.TextInput<InputType>`
