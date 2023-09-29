@@ -1,11 +1,18 @@
 import { Text, View } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container } from './styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
-export default function Home() {
+function Home() {
+  const user = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+
   return (
     <Container>
-      <Text>Home</Text>
+      <Text>{user.userID}</Text>
     </Container>
   );
 }
+
+export default Home;

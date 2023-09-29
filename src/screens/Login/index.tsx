@@ -25,9 +25,11 @@ import onGoogleButtonPress from '../../services/SignInWithGoogle';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { WEB_CLIENT_ID } from '../../helpers';
 import ResetPassword from '../../services/ResetPassword';
-import { Modal } from 'react-native';
+import { Alert, Modal } from 'react-native';
 import CloseButton from '../../components/CloseButton';
 import { MainStyles } from '../../theme/MainStyles';
+import { useDispatch } from 'react-redux';
+import { setID } from '../../redux/reducers/userReducer';
 
 type FormDataProps = {
   email: string;
@@ -49,6 +51,8 @@ export default function Login() {
   const [modalVisible, setModalVisible] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
 
+  const dispatch = useDispatch();
+
   const {
     control,
     handleSubmit,
@@ -61,16 +65,15 @@ export default function Login() {
     SignIn(data.email, data.password)
       .then((uid) => {
         console.log(uid);
-        if (uid) navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
+        if (uid) {
+          dispatch(setID(uid));
+          navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
+        }
       })
       .catch((err) => {
         console.log(err);
       });
   }
-  const handleResetPassword = () => {
-    let hasError = ResetPassword(resetEmail);
-    console.log(hasError);
-  };
 
   return (
     <Container>
@@ -102,9 +105,9 @@ export default function Login() {
             render={({ field: { onChange } }) => (
               <Input
                 placeholder="Senha"
+                placeholderTextColor={MainStyles.text.color.placeholders}
                 onChangeText={onChange}
                 maxLength={12}
-                placeholderTextColor={MainStyles.text.color.placeholders}
                 secureTextEntry
                 hasError={errors.password?.message}
               />
@@ -144,11 +147,12 @@ export default function Login() {
           <CloseButton onPress={() => setModalVisible(false)} />
           <Input
             placeholder="Email"
+            placeholderTextColor={MainStyles.text.color.placeholders}
             onChangeText={(e: string) => setResetEmail(e)}
             maxLength={30}
             keyboardType="email-address"
           />
-          <Button title="Resetar Senha" onPress={handleResetPassword} />
+          <Button title="Resetar Senha" onPress={() => ResetPassword(resetEmail)} />
         </ModalBody>
       </Modal>
     </Container>

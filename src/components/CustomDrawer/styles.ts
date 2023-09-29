@@ -26,6 +26,7 @@ export const MenuButton = styled.TouchableOpacity`
   align-items: center;
 `;
 export const MenuText = styled.Text`
+  color: ${MainStyles.text.color.primary};
   font-size: ${MainStyles.text.size.subtitle};
 `;
 
