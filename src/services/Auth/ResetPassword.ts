@@ -15,7 +15,6 @@ const ResetPassword = (email: string) => {
       })
       .catch((error) => {
         const erroCode = `auth/${error.code.split('/')[1]}`;
-        console.log(erroCode);
 
         switch (erroCode) {
           case 'auth/user-not-found':

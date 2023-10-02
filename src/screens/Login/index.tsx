@@ -90,7 +90,7 @@ export default function Login() {
               <Input
                 placeholder="Email"
                 onChangeText={onChange}
-                maxLength={30}
+                maxLength={40}
                 placeholderTextColor={MainStyles.text.color.placeholders}
                 hasError={errors.email?.message}
                 keyboardType="email-address"
@@ -127,22 +127,25 @@ export default function Login() {
         <AuthOptions
           onPress={() =>
             onGoogleButtonPress().then(async () => {
-              const user = auth().currentUser;
+              const GoogleUser = await GoogleSignin.getCurrentUser();
 
-              if (user) {
+              if (GoogleUser) {
+                const googleCredential = auth.GoogleAuthProvider.credential(GoogleUser.idToken);
+                const userCredential = await auth().signInWithCredential(googleCredential);
+                const uid = userCredential.user.uid;
+
                 CreateUserInfo({
-                  id: user.uid,
-                  email: user.email,
-                  name: user.displayName,
-                  avatar: user.photoURL,
+                  id: uid,
+                  email: GoogleUser.user.email,
+                  name: GoogleUser.user.name,
+                  avatar: GoogleUser.user.photo,
                 });
-                dispatch(setID(user.uid));
-                dispatch(setEmail(user.email));
-                if (user.displayName) dispatch(setName(user.displayName));
-                if (user.photoURL) dispatch(setAvatar(user.photoURL));
-              }
 
-              navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
+                dispatch(setID(uid));
+                navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
+              } else {
+                Alert.alert('Error de Login', 'Ocorreu um erro ao tentar acessar sua conta google');
+              }
             })
           }
         />
@@ -164,7 +167,7 @@ export default function Login() {
             placeholder="Email"
             placeholderTextColor={MainStyles.text.color.placeholders}
             onChangeText={(e: string) => setResetEmail(e)}
-            maxLength={30}
+            maxLength={40}
             keyboardType="email-address"
           />
           <Button title="Resetar Senha" onPress={() => ResetPassword(resetEmail)} />

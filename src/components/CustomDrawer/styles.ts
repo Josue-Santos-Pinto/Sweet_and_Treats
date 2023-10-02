@@ -7,8 +7,9 @@ export const Container = styled.View`
 
 export const HeaderMenuArea = styled.View`
   width: 100%;
-  height: 80px;
+  min-height: 80px;
   padding: 12px;
+  flex-direction: row;
 `;
 export const UserPhoto = styled.View`
   width: 70px;
@@ -18,12 +19,25 @@ export const UserPhoto = styled.View`
   background-color: #ccc;
   border-radius: 35px;
   overflow: hidden;
+  margin-horizontal: 10px;
 `;
 export const UserPhotoImg = styled.Image`
   width: 100%;
   height: 100%;
 `;
-
+export const UserInfo = styled.View`
+  flex: 1;
+  padding: 10px;
+  flex-direction: column;
+`;
+export const UserName = styled.Text`
+  font-size: ${MainStyles.text.size.subtitle};
+  color: ${MainStyles.text.color.primary};
+`;
+export const UserEmail = styled.Text`
+  font-size: ${MainStyles.text.size.small};
+  color: ${MainStyles.text.color.secundary};
+`;
 export const MenuButton = styled.TouchableOpacity`
   width: 100%;
   margin-vertical: 12px;

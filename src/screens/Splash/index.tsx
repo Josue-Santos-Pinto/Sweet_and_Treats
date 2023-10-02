@@ -3,13 +3,18 @@ import { Container } from './styles';
 import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
+import { useDispatch } from 'react-redux';
+import { setID } from '../../redux/reducers/userReducer';
 
 export default function Splash() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-  const isLogged = () => {
+  const isLogged = async () => {
     const user = auth().currentUser;
+
     if (user) {
+      dispatch(setID(user.uid));
       navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
     } else {
       navigation.reset({ index: 1, routes: [{ name: 'Login' }] });

@@ -1,10 +1,10 @@
-import React from 'react';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 const Logout = async (isGoogleProvider: boolean) => {
+  console.log(isGoogleProvider);
   if (isGoogleProvider) {
-    return await GoogleSignin.revokeAccess();
+    await GoogleSignin.signOut();
   } else {
     auth()
       .signOut()

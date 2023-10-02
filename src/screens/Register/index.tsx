@@ -1,11 +1,13 @@
 import React from 'react';
+import { Alert } from 'react-native';
 import { Container, FormArea, Input, InputArea, TextError } from './styles';
 import { useForm, Controller } from 'react-hook-form';
-import auth from '@react-native-firebase/auth';
 
 import AuthHeader from '../../components/AuthHeader';
 import Button from '../../components/Button';
 import AuthOptions from '../../components/AuthOptions';
+
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -15,18 +17,24 @@ import SlashedOr from '../../components/SlashedOr';
 import CreateUser from '../../services/Auth/CreateUser';
 import { MainStyles } from '../../theme/MainStyles';
 import onGoogleButtonPress from '../../services/Auth/SignInWithGoogle';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useDispatch } from 'react-redux';
 import { setID } from '../../redux/reducers/userReducer';
 import CreateUserInfo from '../../services/DB/CreateUserInfo';
+import auth from '@react-native-firebase/auth';
 
 type FormDataProps = {
+  name: string;
   email: string;
   password: string;
   password_confirm: string;
 };
 
 const RegisterSchema = yup.object({
+  name: yup
+    .string()
+    .required('Informe seu nome')
+    .min(5, 'O nome deve conter de 5 a 18 caracteres')
+    .max(18, 'O nome deve conter de 5 a 18 caracteres'),
   email: yup.string().required('Informe o email').email('Email invalido'),
   password: yup
     .string()
@@ -53,10 +61,9 @@ export default function Register() {
   function handleRegister(data: FormDataProps) {
     CreateUser(data.email, data.password)
       .then((uid) => {
-        console.log(uid);
         if (uid) {
+          CreateUserInfo({ id: uid, name: data.name, email: data.email });
           dispatch(setID(uid));
-          CreateUserInfo({ id: uid, email: data.email });
           navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
         }
       })
@@ -75,13 +82,29 @@ export default function Register() {
         <InputArea>
           <Controller
             control={control}
+            name="name"
+            render={({ field: { onChange } }) => (
+              <Input
+                placeholder="Nome"
+                placeholderTextColor={MainStyles.text.color.placeholders}
+                onChangeText={onChange}
+                maxLength={18}
+                hasError={errors.name?.message}
+              />
+            )}
+          />
+          {errors.email?.message && <TextError>{errors.email?.message}</TextError>}
+        </InputArea>
+        <InputArea>
+          <Controller
+            control={control}
             name="email"
             render={({ field: { onChange } }) => (
               <Input
                 placeholder="Email"
                 placeholderTextColor={MainStyles.text.color.placeholders}
                 onChangeText={onChange}
-                maxLength={30}
+                maxLength={40}
                 hasError={errors.email?.message}
                 keyboardType="email-address"
               />
@@ -133,19 +156,25 @@ export default function Register() {
         <AuthOptions
           onPress={() =>
             onGoogleButtonPress().then(async () => {
-              const user = auth().currentUser;
+              const GoogleUser = await GoogleSignin.getCurrentUser();
 
-              if (user) {
+              if (GoogleUser) {
+                const googleCredential = auth.GoogleAuthProvider.credential(GoogleUser.idToken);
+                const userCredential = await auth().signInWithCredential(googleCredential);
+                const uid = userCredential.user.uid;
+
                 CreateUserInfo({
-                  id: user.uid,
-                  email: user.email,
-                  name: user.displayName,
-                  avatar: user.photoURL,
+                  id: uid,
+                  email: GoogleUser.user.email,
+                  name: GoogleUser.user.name,
+                  avatar: GoogleUser.user.photo,
                 });
-                dispatch(setID(user.uid));
-              }
 
-              navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
+                dispatch(setID(uid));
+                navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
+              } else {
+                Alert.alert('Error de Login', 'Ocorreu um erro ao tentar acessar sua conta google');
+              }
             })
           }
         />
