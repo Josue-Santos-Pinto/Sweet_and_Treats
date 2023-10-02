@@ -19,6 +19,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import UserSVG from '../../assets/icons/user.svg';
 import { setAvatar, setEmail, setID, setName } from '../../redux/reducers/userReducer';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { MainStyles } from '../../theme/MainStyles';
 
 export default function CustomDrawer({ ...props }) {
   const navigation = useNavigation();
@@ -26,9 +28,9 @@ export default function CustomDrawer({ ...props }) {
   const dispatch = useDispatch();
 
   const menu = [
-    { name: 'Inicio', screen: 'Home', icon: 'house' },
-    { name: 'Como chegar', screen: 'Location', icon: 'house' },
-    { name: 'Receitas', screen: 'Recipes', icon: 'house' },
+    { name: 'Inicio', screen: 'Home', icon: 'home' },
+    { name: 'Como chegar', screen: 'Location', icon: 'map-marker' },
+    { name: 'Receitas', screen: 'Recipes', icon: 'book' },
   ];
   const handleLogout = () => {
     const user = auth().currentUser;
@@ -62,8 +64,24 @@ export default function CustomDrawer({ ...props }) {
         </UserInfo>
       </HeaderMenuArea>
       {menu.map((item, index) => (
-        <MenuButton key={index}>
-          <MenuText>{item.name}</MenuText>
+        <MenuButton
+          key={index}
+          isActive={props.state.routes[props.state.index].name === item.screen}
+          onPress={() => navigation.navigate<any>(item.screen)}
+        >
+          <Icon
+            name={item.icon}
+            size={28}
+            color={
+              props.state.routes[props.state.index].name === item.screen
+                ? MainStyles.text.color.secundary
+                : MainStyles.text.color.placeholders
+            }
+            style={{ width: '20%' }}
+          />
+          <MenuText isActive={props.state.routes[props.state.index].name === item.screen}>
+            {item.name}
+          </MenuText>
         </MenuButton>
       ))}
       <LogoutArea>

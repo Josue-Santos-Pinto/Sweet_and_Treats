@@ -5,7 +5,7 @@ import { Container } from './styles';
 export default function Recipes() {
   return (
     <Container>
-      <Text>Home</Text>
+      <Text>Receitas</Text>
     </Container>
   );
 }

@@ -5,7 +5,7 @@ import { Container } from './styles';
 export default function Location() {
   return (
     <Container>
-      <Text>Home</Text>
+      <Text>Como chegar</Text>
     </Container>
   );
 }

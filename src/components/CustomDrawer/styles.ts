@@ -4,12 +4,13 @@ import { MainStyles } from '../../theme/MainStyles';
 export const Container = styled.View`
   flex: 1;
 `;
-
 export const HeaderMenuArea = styled.View`
   width: 100%;
   min-height: 80px;
   padding: 12px;
   flex-direction: row;
+  border-bottom-width: 0.5px;
+  border-bottom-color: #000;
 `;
 export const UserPhoto = styled.View`
   width: 70px;
@@ -39,13 +40,19 @@ export const UserEmail = styled.Text`
   color: ${MainStyles.text.color.secundary};
 `;
 export const MenuButton = styled.TouchableOpacity`
-  width: 100%;
-  margin-vertical: 12px;
-  justify-content: center;
+  width: 96%;
+  min-height: 40px;
+  flex-direction: row;
+  margin: 12px auto;
+  padding-horizontal: 12px;
   align-items: center;
+  background-color: ${(props: { isActive: boolean }) =>
+    props.isActive ? MainStyles.background.primary : 'transparent'};
+  border-radius: 10px;
 `;
 export const MenuText = styled.Text`
-  color: ${MainStyles.text.color.primary};
+  color: ${(props: { isActive: boolean }) =>
+    props.isActive ? MainStyles.text.color.primary : MainStyles.text.color.secundary};
   font-size: ${MainStyles.text.size.subtitle};
 `;
 
