@@ -11,12 +11,17 @@ export const HeaderMenuArea = styled.View`
   padding: 12px;
 `;
 export const UserPhoto = styled.View`
-  width: 40px;
-  height: 40px;
+  width: 70px;
+  height: 70px;
   justify-content: center;
   align-items: center;
-  background-color: black;
-  border-radius: 20px;
+  background-color: #ccc;
+  border-radius: 35px;
+  overflow: hidden;
+`;
+export const UserPhotoImg = styled.Image`
+  width: 100%;
+  height: 100%;
 `;
 
 export const MenuButton = styled.TouchableOpacity`

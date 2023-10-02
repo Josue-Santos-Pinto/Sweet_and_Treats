@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, FormArea, Input, InputArea, TextError } from './styles';
 import { useForm, Controller } from 'react-hook-form';
+import auth from '@react-native-firebase/auth';
 
 import AuthHeader from '../../components/AuthHeader';
 import Button from '../../components/Button';
@@ -11,10 +12,13 @@ import * as yup from 'yup';
 import SwitchLoginRegister from '../../components/SwitchLoginRegister';
 import { useNavigation } from '@react-navigation/native';
 import SlashedOr from '../../components/SlashedOr';
-import CreateUser from '../../services/CreateUser';
+import CreateUser from '../../services/Auth/CreateUser';
 import { MainStyles } from '../../theme/MainStyles';
-import onGoogleButtonPress from '../../services/SignInWithGoogle';
+import onGoogleButtonPress from '../../services/Auth/SignInWithGoogle';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { useDispatch } from 'react-redux';
+import { setID } from '../../redux/reducers/userReducer';
+import CreateUserInfo from '../../services/DB/CreateUserInfo';
 
 type FormDataProps = {
   email: string;
@@ -36,6 +40,8 @@ const RegisterSchema = yup.object({
 });
 
 export default function Register() {
+  const dispatch = useDispatch();
+
   const {
     control,
     handleSubmit,
@@ -48,7 +54,11 @@ export default function Register() {
     CreateUser(data.email, data.password)
       .then((uid) => {
         console.log(uid);
-        if (uid) navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
+        if (uid) {
+          dispatch(setID(uid));
+          CreateUserInfo({ id: uid, email: data.email });
+          navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -123,9 +133,19 @@ export default function Register() {
         <AuthOptions
           onPress={() =>
             onGoogleButtonPress().then(async () => {
-              if ((await GoogleSignin.getCurrentUser()) !== null) {
-                navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
+              const user = auth().currentUser;
+
+              if (user) {
+                CreateUserInfo({
+                  id: user.uid,
+                  email: user.email,
+                  name: user.displayName,
+                  avatar: user.photoURL,
+                });
+                dispatch(setID(user.uid));
               }
+
+              navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
             })
           }
         />

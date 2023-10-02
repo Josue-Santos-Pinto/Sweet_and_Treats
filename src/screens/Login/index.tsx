@@ -20,17 +20,18 @@ import * as yup from 'yup';
 import SwitchLoginRegister from '../../components/SwitchLoginRegister';
 import { useNavigation } from '@react-navigation/native';
 import SlashedOr from '../../components/SlashedOr';
-import SignIn from '../../services/SignIn';
-import onGoogleButtonPress from '../../services/SignInWithGoogle';
+import SignIn from '../../services/Auth/SignIn';
+import onGoogleButtonPress from '../../services/Auth/SignInWithGoogle';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { WEB_CLIENT_ID } from '../../helpers';
-import ResetPassword from '../../services/ResetPassword';
+import ResetPassword from '../../services/Auth/ResetPassword';
 import { Alert, Modal } from 'react-native';
 import CloseButton from '../../components/CloseButton';
 import { MainStyles } from '../../theme/MainStyles';
 import { useDispatch } from 'react-redux';
-import { setID } from '../../redux/reducers/userReducer';
-
+import { setAvatar, setEmail, setID, setName } from '../../redux/reducers/userReducer';
+import auth from '@react-native-firebase/auth';
+import CreateUserInfo from '../../services/DB/CreateUserInfo';
 type FormDataProps = {
   email: string;
   password: string;
@@ -67,6 +68,7 @@ export default function Login() {
         console.log(uid);
         if (uid) {
           dispatch(setID(uid));
+
           navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
         }
       })
@@ -125,9 +127,22 @@ export default function Login() {
         <AuthOptions
           onPress={() =>
             onGoogleButtonPress().then(async () => {
-              if ((await GoogleSignin.getCurrentUser()) !== null) {
-                navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
+              const user = auth().currentUser;
+
+              if (user) {
+                CreateUserInfo({
+                  id: user.uid,
+                  email: user.email,
+                  name: user.displayName,
+                  avatar: user.photoURL,
+                });
+                dispatch(setID(user.uid));
+                dispatch(setEmail(user.email));
+                if (user.displayName) dispatch(setName(user.displayName));
+                if (user.photoURL) dispatch(setAvatar(user.photoURL));
               }
+
+              navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
             })
           }
         />

@@ -11,6 +11,7 @@ function Home() {
   return (
     <Container>
       <Text>{user.userID}</Text>
+      <Text>{user.email}</Text>
     </Container>
   );
 }
