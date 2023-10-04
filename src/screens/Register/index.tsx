@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import { Container, FormArea, Input, InputArea, TextError } from './styles';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -76,114 +76,119 @@ export default function Register() {
 
   return (
     <Container>
-      <AuthHeader />
+      <ScrollView>
+        <AuthHeader />
 
-      <FormArea>
-        <InputArea>
-          <Controller
-            control={control}
-            name="name"
-            render={({ field: { onChange } }) => (
-              <Input
-                placeholder="Nome"
-                placeholderTextColor={MainStyles.text.color.placeholders}
-                onChangeText={onChange}
-                maxLength={18}
-                hasError={errors.name?.message}
-              />
+        <FormArea>
+          <InputArea>
+            <Controller
+              control={control}
+              name="name"
+              render={({ field: { onChange } }) => (
+                <Input
+                  placeholder="Nome"
+                  placeholderTextColor={MainStyles.text.color.placeholders}
+                  onChangeText={onChange}
+                  maxLength={18}
+                  hasError={errors.name?.message}
+                />
+              )}
+            />
+            {errors.name?.message && <TextError>{errors.name?.message}</TextError>}
+          </InputArea>
+          <InputArea>
+            <Controller
+              control={control}
+              name="email"
+              render={({ field: { onChange } }) => (
+                <Input
+                  placeholder="Email"
+                  placeholderTextColor={MainStyles.text.color.placeholders}
+                  onChangeText={onChange}
+                  maxLength={40}
+                  hasError={errors.email?.message}
+                  keyboardType="email-address"
+                />
+              )}
+            />
+            {errors.email?.message && <TextError>{errors.email?.message}</TextError>}
+          </InputArea>
+
+          <InputArea>
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange } }) => (
+                <Input
+                  placeholder="Senha"
+                  placeholderTextColor={MainStyles.text.color.placeholders}
+                  onChangeText={onChange}
+                  maxLength={12}
+                  secureTextEntry
+                  hasError={errors.password?.message}
+                />
+              )}
+            />
+            {errors.password?.message && <TextError>{errors.password?.message}</TextError>}
+          </InputArea>
+
+          <InputArea>
+            <Controller
+              control={control}
+              name="password_confirm"
+              render={({ field: { onChange } }) => (
+                <Input
+                  placeholder="Confirmar Senha"
+                  placeholderTextColor={MainStyles.text.color.placeholders}
+                  onChangeText={onChange}
+                  maxLength={12}
+                  secureTextEntry
+                  hasError={errors.password_confirm?.message}
+                />
+              )}
+            />
+            {errors.password_confirm?.message && (
+              <TextError>{errors.password_confirm?.message}</TextError>
             )}
+          </InputArea>
+
+          <Button title="Cadastrar-se" onPress={handleSubmit(handleRegister)} />
+          <SlashedOr />
+          <AuthOptions
+            onPress={() =>
+              onGoogleButtonPress().then(async () => {
+                const GoogleUser = await GoogleSignin.getCurrentUser();
+
+                if (GoogleUser) {
+                  const googleCredential = auth.GoogleAuthProvider.credential(GoogleUser.idToken);
+                  const userCredential = await auth().signInWithCredential(googleCredential);
+                  const uid = userCredential.user.uid;
+
+                  CreateUserInfo({
+                    id: uid,
+                    email: GoogleUser.user.email,
+                    name: GoogleUser.user.name,
+                    avatar: GoogleUser.user.photo,
+                  });
+
+                  dispatch(setID(uid));
+                  navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
+                } else {
+                  Alert.alert(
+                    'Error de Login',
+                    'Ocorreu um erro ao tentar acessar sua conta google'
+                  );
+                }
+              })
+            }
           />
-          {errors.email?.message && <TextError>{errors.email?.message}</TextError>}
-        </InputArea>
-        <InputArea>
-          <Controller
-            control={control}
-            name="email"
-            render={({ field: { onChange } }) => (
-              <Input
-                placeholder="Email"
-                placeholderTextColor={MainStyles.text.color.placeholders}
-                onChangeText={onChange}
-                maxLength={40}
-                hasError={errors.email?.message}
-                keyboardType="email-address"
-              />
-            )}
+          <SwitchLoginRegister
+            phrase="Já possui uma conta?"
+            buttonText="Fazer Login"
+            onPress={async () => navigation.navigate('Login')}
           />
-          {errors.email?.message && <TextError>{errors.email?.message}</TextError>}
-        </InputArea>
-
-        <InputArea>
-          <Controller
-            control={control}
-            name="password"
-            render={({ field: { onChange } }) => (
-              <Input
-                placeholder="Senha"
-                placeholderTextColor={MainStyles.text.color.placeholders}
-                onChangeText={onChange}
-                maxLength={12}
-                secureTextEntry
-                hasError={errors.password?.message}
-              />
-            )}
-          />
-          {errors.password?.message && <TextError>{errors.password?.message}</TextError>}
-        </InputArea>
-
-        <InputArea>
-          <Controller
-            control={control}
-            name="password_confirm"
-            render={({ field: { onChange } }) => (
-              <Input
-                placeholder="Confirmar Senha"
-                placeholderTextColor={MainStyles.text.color.placeholders}
-                onChangeText={onChange}
-                maxLength={12}
-                secureTextEntry
-                hasError={errors.password_confirm?.message}
-              />
-            )}
-          />
-          {errors.password_confirm?.message && (
-            <TextError>{errors.password_confirm?.message}</TextError>
-          )}
-        </InputArea>
-
-        <Button title="Cadastrar-se" onPress={handleSubmit(handleRegister)} />
-        <SlashedOr />
-        <AuthOptions
-          onPress={() =>
-            onGoogleButtonPress().then(async () => {
-              const GoogleUser = await GoogleSignin.getCurrentUser();
-
-              if (GoogleUser) {
-                const googleCredential = auth.GoogleAuthProvider.credential(GoogleUser.idToken);
-                const userCredential = await auth().signInWithCredential(googleCredential);
-                const uid = userCredential.user.uid;
-
-                CreateUserInfo({
-                  id: uid,
-                  email: GoogleUser.user.email,
-                  name: GoogleUser.user.name,
-                  avatar: GoogleUser.user.photo,
-                });
-
-                dispatch(setID(uid));
-                navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
-              } else {
-                Alert.alert('Error de Login', 'Ocorreu um erro ao tentar acessar sua conta google');
-              }
-            })
-          }
-        />
-        <SwitchLoginRegister
-          phrase="Já possui uma conta?"
-          buttonText="Fazer Login"
-          onPress={async () => navigation.navigate('Login')}
-        />
-      </FormArea>
+        </FormArea>
+      </ScrollView>
     </Container>
   );
 }

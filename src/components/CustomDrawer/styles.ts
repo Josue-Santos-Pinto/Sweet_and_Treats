@@ -50,6 +50,12 @@ export const MenuButton = styled.TouchableOpacity`
     props.isActive ? MainStyles.background.primary : 'transparent'};
   border-radius: 10px;
 `;
+export const IconArea = styled.View`
+  width: 40px;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
+`;
 export const MenuText = styled.Text`
   color: ${(props: { isActive: boolean }) =>
     props.isActive ? MainStyles.text.color.primary : MainStyles.text.color.secundary};

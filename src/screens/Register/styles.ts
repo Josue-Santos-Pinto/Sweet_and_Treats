@@ -27,6 +27,7 @@ export const TextError = styled.Text`
 export const Input = styled.TextInput<InputType>`
   width: 100%;
   height: auto;
+  color: ${MainStyles.text.color.primary};
   background-color: #fff;
   margin-vertical: 8px;
   border: 1px solid

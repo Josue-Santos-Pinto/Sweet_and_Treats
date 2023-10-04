@@ -9,6 +9,8 @@ import {
   PasswordForgotText,
   TextError,
 } from './styles';
+import { ScrollView } from 'react-native';
+
 import { useForm, Controller } from 'react-hook-form';
 
 import AuthHeader from '../../components/AuthHeader';
@@ -79,100 +81,105 @@ export default function Login() {
 
   return (
     <Container>
-      <AuthHeader />
+      <ScrollView>
+        <AuthHeader />
 
-      <FormArea>
-        <InputArea>
-          <Controller
-            control={control}
-            name="email"
-            render={({ field: { onChange } }) => (
-              <Input
-                placeholder="Email"
-                onChangeText={onChange}
-                maxLength={40}
-                placeholderTextColor={MainStyles.text.color.placeholders}
-                hasError={errors.email?.message}
-                keyboardType="email-address"
-              />
-            )}
+        <FormArea>
+          <InputArea>
+            <Controller
+              control={control}
+              name="email"
+              render={({ field: { onChange } }) => (
+                <Input
+                  placeholder="Email"
+                  onChangeText={onChange}
+                  maxLength={40}
+                  placeholderTextColor={MainStyles.text.color.placeholders}
+                  hasError={errors.email?.message}
+                  keyboardType="email-address"
+                />
+              )}
+            />
+            {errors.email?.message && <TextError>{errors.email?.message}</TextError>}
+          </InputArea>
+
+          <InputArea>
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange } }) => (
+                <Input
+                  placeholder="Senha"
+                  placeholderTextColor={MainStyles.text.color.placeholders}
+                  onChangeText={onChange}
+                  maxLength={12}
+                  secureTextEntry
+                  hasError={errors.password?.message}
+                />
+              )}
+            />
+            {errors.password?.message && <TextError>{errors.password?.message}</TextError>}
+
+            <PasswordForgotButton onPress={() => setModalVisible(true)}>
+              <PasswordForgotText>Esqueci minha senha</PasswordForgotText>
+            </PasswordForgotButton>
+          </InputArea>
+
+          <Button title="Login" onPress={handleSubmit(handleLogin)} />
+          <SlashedOr />
+          <AuthOptions
+            onPress={() =>
+              onGoogleButtonPress().then(async () => {
+                const GoogleUser = await GoogleSignin.getCurrentUser();
+
+                if (GoogleUser) {
+                  const googleCredential = auth.GoogleAuthProvider.credential(GoogleUser.idToken);
+                  const userCredential = await auth().signInWithCredential(googleCredential);
+                  const uid = userCredential.user.uid;
+
+                  CreateUserInfo({
+                    id: uid,
+                    email: GoogleUser.user.email,
+                    name: GoogleUser.user.name,
+                    avatar: GoogleUser.user.photo,
+                  });
+
+                  dispatch(setID(uid));
+                  navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
+                } else {
+                  Alert.alert(
+                    'Error de Login',
+                    'Ocorreu um erro ao tentar acessar sua conta google'
+                  );
+                }
+              })
+            }
           />
-          {errors.email?.message && <TextError>{errors.email?.message}</TextError>}
-        </InputArea>
-
-        <InputArea>
-          <Controller
-            control={control}
-            name="password"
-            render={({ field: { onChange } }) => (
-              <Input
-                placeholder="Senha"
-                placeholderTextColor={MainStyles.text.color.placeholders}
-                onChangeText={onChange}
-                maxLength={12}
-                secureTextEntry
-                hasError={errors.password?.message}
-              />
-            )}
+          <SwitchLoginRegister
+            phrase="Não possui uma conta?"
+            buttonText="Criar Conta"
+            onPress={async () => navigation.navigate('Register')}
           />
-          {errors.password?.message && <TextError>{errors.password?.message}</TextError>}
-
-          <PasswordForgotButton onPress={() => setModalVisible(true)}>
-            <PasswordForgotText>Esqueci minha senha</PasswordForgotText>
-          </PasswordForgotButton>
-        </InputArea>
-
-        <Button title="Login" onPress={handleSubmit(handleLogin)} />
-        <SlashedOr />
-        <AuthOptions
-          onPress={() =>
-            onGoogleButtonPress().then(async () => {
-              const GoogleUser = await GoogleSignin.getCurrentUser();
-
-              if (GoogleUser) {
-                const googleCredential = auth.GoogleAuthProvider.credential(GoogleUser.idToken);
-                const userCredential = await auth().signInWithCredential(googleCredential);
-                const uid = userCredential.user.uid;
-
-                CreateUserInfo({
-                  id: uid,
-                  email: GoogleUser.user.email,
-                  name: GoogleUser.user.name,
-                  avatar: GoogleUser.user.photo,
-                });
-
-                dispatch(setID(uid));
-                navigation.reset({ index: 1, routes: [{ name: 'MainDrawer' }] });
-              } else {
-                Alert.alert('Error de Login', 'Ocorreu um erro ao tentar acessar sua conta google');
-              }
-            })
-          }
-        />
-        <SwitchLoginRegister
-          phrase="Não possui uma conta?"
-          buttonText="Criar Conta"
-          onPress={async () => navigation.navigate('Register')}
-        />
-      </FormArea>
-      <Modal
-        visible={modalVisible}
-        animationType="fade"
-        transparent={false}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <ModalBody>
-          <CloseButton onPress={() => setModalVisible(false)} />
-          <Input
-            placeholder="Email"
-            placeholderTextColor={MainStyles.text.color.placeholders}
-            onChangeText={(e: string) => setResetEmail(e)}
-            maxLength={40}
-            keyboardType="email-address"
-          />
-          <Button title="Resetar Senha" onPress={() => ResetPassword(resetEmail)} />
-        </ModalBody>
-      </Modal>
+        </FormArea>
+        <Modal
+          visible={modalVisible}
+          animationType="fade"
+          transparent={false}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <ModalBody>
+            <CloseButton onPress={() => setModalVisible(false)} />
+            <Input
+              placeholder="Email"
+              placeholderTextColor={MainStyles.text.color.placeholders}
+              onChangeText={(e: string) => setResetEmail(e)}
+              maxLength={40}
+              keyboardType="email-address"
+            />
+            <Button title="Resetar Senha" onPress={() => ResetPassword(resetEmail)} />
+          </ModalBody>
+        </Modal>
+      </ScrollView>
     </Container>
   );
 }

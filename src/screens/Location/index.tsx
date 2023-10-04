@@ -5,7 +5,7 @@ import { Container } from './styles';
 export default function Location() {
   return (
     <Container>
-      <Text>Como chegar</Text>
+      <Text style={{ color: '#000' }}>Como chegar</Text>
     </Container>
   );
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Container,
   HeaderMenuArea,
+  IconArea,
   LogoutArea,
   MenuButton,
   MenuText,
@@ -17,7 +18,6 @@ import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import UserSVG from '../../assets/icons/user.svg';
 import { setAvatar, setEmail, setID, setName } from '../../redux/reducers/userReducer';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { MainStyles } from '../../theme/MainStyles';
@@ -31,6 +31,7 @@ export default function CustomDrawer({ ...props }) {
     { name: 'Inicio', screen: 'Home', icon: 'home' },
     { name: 'Como chegar', screen: 'Location', icon: 'map-marker' },
     { name: 'Receitas', screen: 'Recipes', icon: 'book' },
+    { name: 'Notificações', screen: 'Notifications', icon: 'bell' },
   ];
   const handleLogout = () => {
     const user = auth().currentUser;
@@ -55,7 +56,7 @@ export default function CustomDrawer({ ...props }) {
           {user.avatar != '' ? (
             <UserPhotoImg source={{ uri: user.avatar }} resizeMode="contain" />
           ) : (
-            <UserSVG width={40} height={40} />
+            <Icon name="user" size={40} color={MainStyles.text.color.secundary} />
           )}
         </UserPhoto>
         <UserInfo>
@@ -69,16 +70,17 @@ export default function CustomDrawer({ ...props }) {
           isActive={props.state.routes[props.state.index].name === item.screen}
           onPress={() => navigation.navigate<any>(item.screen)}
         >
-          <Icon
-            name={item.icon}
-            size={28}
-            color={
-              props.state.routes[props.state.index].name === item.screen
-                ? MainStyles.text.color.secundary
-                : MainStyles.text.color.placeholders
-            }
-            style={{ width: '20%' }}
-          />
+          <IconArea>
+            <Icon
+              name={item.icon}
+              size={30}
+              color={
+                props.state.routes[props.state.index].name === item.screen
+                  ? MainStyles.text.color.secundary
+                  : MainStyles.text.color.placeholders
+              }
+            />
+          </IconArea>
           <MenuText isActive={props.state.routes[props.state.index].name === item.screen}>
             {item.name}
           </MenuText>

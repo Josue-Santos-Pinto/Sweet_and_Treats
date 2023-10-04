@@ -2,10 +2,10 @@ import { Text, View } from 'react-native';
 import React from 'react';
 import { Container } from './styles';
 
-export default function Recipes() {
+export default function Notifications() {
   return (
     <Container>
-      <Text style={{ color: '#000' }}>Receitas</Text>
+      <Text style={{ color: '#000' }}>Notificações</Text>
     </Container>
   );
 }
