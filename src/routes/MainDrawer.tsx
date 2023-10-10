@@ -19,7 +19,10 @@ export function MainDrawer() {
   return (
     <Drawer.Navigator
       drawerContent={CustomDrawer}
-      screenOptions={{ title: '', headerTransparent: true }}
+      screenOptions={{
+        title: '',
+        headerStyle: { borderBottomWidth: 0, elevation: 0, backgroundColor: 'transparent' },
+      }}
     >
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="Location" component={Location} />

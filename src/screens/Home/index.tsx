@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import GetCurrentUserInfo from '../../services/User/GetCurrentUserInfo';
 import { setAvatar, setEmail, setName } from '../../redux/reducers/userReducer';
+import BreadBanner from '../../components/BreadBanner';
 
 function Home() {
   const user = useSelector((state: RootState) => state.user);
@@ -19,6 +20,7 @@ function Home() {
   }, []);
   return (
     <Container>
+      <BreadBanner />
       <Text style={{ color: '#000' }}>Home</Text>
     </Container>
   );
