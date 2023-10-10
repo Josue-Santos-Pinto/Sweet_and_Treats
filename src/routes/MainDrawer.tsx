@@ -5,6 +5,7 @@ import Location from '../screens/Location';
 import Recipes from '../screens/Recipes';
 import CustomDrawer from '../components/CustomDrawer';
 import Notifications from '../screens/Notifications';
+import { MainStyles } from '../theme/MainStyles';
 
 export type RootMainDrawerType = {
   Home: undefined;
@@ -21,7 +22,11 @@ export function MainDrawer() {
       drawerContent={CustomDrawer}
       screenOptions={{
         title: '',
-        headerStyle: { borderBottomWidth: 0, elevation: 0, backgroundColor: 'transparent' },
+        headerStyle: {
+          borderBottomWidth: 0,
+          elevation: 0,
+          backgroundColor: MainStyles.background.primary,
+        },
       }}
     >
       <Drawer.Screen name="Home" component={Home} />
