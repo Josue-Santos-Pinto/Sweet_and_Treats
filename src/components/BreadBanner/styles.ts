@@ -6,7 +6,7 @@ export const Container = styled.View`
   margin: 12px auto;
   border-radius: 20px;
   max-height: 160px;
-  background-color: red;
+  background-color: #fff;
   overflow: hidden;
 `;
 
