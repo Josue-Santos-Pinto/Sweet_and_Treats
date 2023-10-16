@@ -49,6 +49,7 @@ export const BottomArea = styled.View`
   border-top-left-radius: 28px;
   border-top-right-radius: 28px;
   margin-top: -4px;
+  padding-horizontal: 14px;
 `;
 export const ProductsListArea = styled.View`
   flex: 1;

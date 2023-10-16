@@ -77,7 +77,9 @@ function Home() {
         <ScrollView showsVerticalScrollIndicator={false}>
           <ProductsListArea>
             {productsList != null &&
-              productsList.map((item, index) => <ProductItem key={item.id} data={item} />)}
+              productsList.map((item, index) => (
+                <ProductItem key={item.id} data={item} isEven={index % 2 == 0} />
+              ))}
           </ProductsListArea>
         </ScrollView>
       </BottomArea>

@@ -1,14 +1,18 @@
 import React, { memo } from 'react';
-import { Container, OtherOptionText, Slash } from './styles';
+import { Container, OtherOptionText, ProductImg, ProductImgArea } from './styles';
 import { Products } from '../../Model/Products';
 
 type ProductItemType = {
   data: Products;
+  isEven: boolean;
 };
 
-function ProductItem({ data }: ProductItemType) {
+function ProductItem({ data, isEven }: ProductItemType) {
   return (
-    <Container>
+    <Container isEven={isEven}>
+      <ProductImgArea>
+        <ProductImg source={{ uri: data.img }} resizeMode="contain" />
+      </ProductImgArea>
       <OtherOptionText>{data.name}</OtherOptionText>
     </Container>
   );
