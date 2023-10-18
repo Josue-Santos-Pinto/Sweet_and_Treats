@@ -30,7 +30,7 @@ export function MainDrawer() {
       }}
     >
       <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="Location" component={Location} />
+      <Drawer.Screen name="Location" component={Location} options={{ headerTransparent: true }} />
       <Drawer.Screen name="Recipes" component={Recipes} />
       <Drawer.Screen name="Notifications" component={Notifications} />
     </Drawer.Navigator>
