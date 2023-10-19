@@ -1,72 +1,109 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Container } from './styles';
 import MapView, { Marker } from 'react-native-maps';
-import { request, PERMISSIONS } from 'react-native-permissions';
-import GetLocation from 'react-native-get-location';
+import MapViewDirections from 'react-native-maps-directions';
+import Geolocation from '@react-native-community/geolocation';
+import Geocoder from 'react-native-geocoding';
+import { MAPS_KEY } from '../../helpers';
+import { Alert } from 'react-native';
 
-type CurrentLocationType = {
-  latitude: number;
-  longitude: number;
+type MapLocType = {
+  name?: string;
+  center: {
+    latitude: number;
+    longitude: number;
+  };
+  zoom: number;
+  pitch: number;
+  altitude: number;
+  heading: number;
 };
 export default function Location() {
-  const [currentLongitude, setCurrentLongitude] = useState<number | null>(null);
-  const [currentLatitude, setCurrentLatitude] = useState<number | null>(null);
+  const mapRef = useRef<MapView>(null);
+
+  const [mapLoc, setMapLoc] = useState<MapLocType>({
+    center: {
+      latitude: -22.828870998276898,
+      longitude: -42.091118816140714,
+    },
+    zoom: 12,
+    pitch: 0,
+    altitude: 0,
+    heading: 0,
+  });
+
+  const [fromLoc, setFromLoc] = useState<MapLocType>();
 
   const destinationCoords = {
     latitude: -22.828870998276898,
     longitude: -42.091118816140714,
   };
 
-  const getLocation = () => {
-    GetLocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 60000,
-    })
-      .then((location) => {
-        setCurrentLatitude(location.latitude);
-        setCurrentLongitude(location.longitude);
-        console.log(location.longitude);
-        getLocation();
-      })
-      .catch((error) => {
-        const { code, message } = error;
-        console.warn(code, message);
-      });
+  const getMyCurrentPosition = () => {
+    Geolocation.getCurrentPosition(
+      async (info) => {
+        const geo = await Geocoder.from(info.coords.latitude, info.coords.longitude);
+
+        if (geo.results.length > 0) {
+          const loc: MapLocType = {
+            name: geo.results[0].formatted_address,
+            center: {
+              latitude: info.coords.latitude,
+              longitude: info.coords.longitude,
+            },
+            zoom: 16,
+            pitch: 0,
+            altitude: 0,
+            heading: 0,
+          };
+
+          setMapLoc(loc);
+          setFromLoc(loc);
+        }
+      },
+      (error) => {
+        Alert.alert('erro', error.toString());
+      }
+    );
   };
 
-  const requestLocationPermission = async () => {
-    request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then((result) => {
-      if (result == 'granted') {
-        getLocation();
-      }
+  const handleDirectionsReady = (r: any) => {
+    console.log(r);
+    mapRef.current?.fitToCoordinates(r.coordinates, {
+      edgePadding: {
+        left: 50,
+        top: 50,
+        right: 50,
+        bottom: 50,
+      },
     });
   };
 
   useEffect(() => {
-    // Obter a localização atual do usuário
-    requestLocationPermission();
+    console.log(fromLoc);
+  }, [fromLoc]);
+
+  useEffect(() => {
+    Geocoder.init(MAPS_KEY, { language: 'pt-br' });
+    getMyCurrentPosition();
   }, []);
 
   return (
     <Container>
-      {currentLongitude && currentLatitude && (
-        <MapView
-          style={{ flex: 1, width: '100%' }}
-          initialRegion={{
-            latitude: currentLatitude,
-            longitude: currentLongitude,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005,
-          }}
-        >
-          <Marker
-            coordinate={{
-              latitude: currentLatitude,
-              longitude: currentLongitude,
-            }}
+      <MapView style={{ flex: 1, width: '100%' }} ref={mapRef} provider="google" camera={mapLoc}>
+        {fromLoc && (
+          <MapViewDirections
+            origin={fromLoc.center}
+            destination={destinationCoords}
+            strokeWidth={5}
+            strokeColor="black"
+            apikey={MAPS_KEY}
+            onReady={handleDirectionsReady}
           />
-        </MapView>
-      )}
+        )}
+
+        <Marker coordinate={destinationCoords} />
+      </MapView>
     </Container>
   );
 }
