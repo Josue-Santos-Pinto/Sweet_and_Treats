@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Container } from './styles';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, MapCircle } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
@@ -68,7 +68,6 @@ export default function Location() {
   };
 
   const handleDirectionsReady = (r: any) => {
-    console.log(r);
     mapRef.current?.fitToCoordinates(r.coordinates, {
       edgePadding: {
         left: 50,
@@ -80,7 +79,8 @@ export default function Location() {
   };
 
   useEffect(() => {
-    console.log(fromLoc);
+    console.log(fromLoc?.center);
+    console.log(destinationCoords);
   }, [fromLoc]);
 
   useEffect(() => {
@@ -95,13 +95,15 @@ export default function Location() {
           <MapViewDirections
             origin={fromLoc.center}
             destination={destinationCoords}
-            strokeWidth={5}
-            strokeColor="black"
+            strokeWidth={10}
+            strokeColor="#4870ff"
             apikey={MAPS_KEY}
             onReady={handleDirectionsReady}
           />
         )}
-
+        {fromLoc && (
+          <Marker coordinate={fromLoc?.center} image={require('../../assets/icons/marker.png')} />
+        )}
         <Marker coordinate={destinationCoords} />
       </MapView>
     </Container>

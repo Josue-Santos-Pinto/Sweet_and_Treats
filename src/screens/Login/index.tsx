@@ -25,13 +25,12 @@ import SlashedOr from '../../components/SlashedOr';
 import SignIn from '../../services/Auth/SignIn';
 import onGoogleButtonPress from '../../services/Auth/SignInWithGoogle';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { WEB_CLIENT_ID } from '../../helpers';
 import ResetPassword from '../../services/Auth/ResetPassword';
 import { Alert, Modal } from 'react-native';
 import CloseButton from '../../components/CloseButton';
 import { MainStyles } from '../../theme/MainStyles';
 import { useDispatch } from 'react-redux';
-import { setAvatar, setEmail, setID, setName } from '../../redux/reducers/userReducer';
+import { setID } from '../../redux/reducers/userReducer';
 import auth from '@react-native-firebase/auth';
 import CreateUserInfo from '../../services/DB/CreateUserInfo';
 type FormDataProps = {
