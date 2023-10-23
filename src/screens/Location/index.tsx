@@ -6,6 +6,7 @@ import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
 import { MAPS_KEY } from '../../helpers';
 import { Alert } from 'react-native';
+import LocationInfo from '../../components/LocationInfo';
 
 type MapLocType = {
   name?: string;
@@ -33,14 +34,21 @@ export default function Location() {
   });
 
   const [fromLoc, setFromLoc] = useState<MapLocType>();
+  const [requestDistance, setRequestDistance] = useState<number>();
+  const [requestTime, setRequestTime] = useState<number>();
 
   const destinationCoords = {
     latitude: -22.828870998276898,
     longitude: -42.091118816140714,
   };
+  let options = {
+    enableHighAccuracy: true,
+    timeout: 1000,
+    maximumAge: 0,
+  };
 
   const getMyCurrentPosition = () => {
-    Geolocation.getCurrentPosition(
+    Geolocation.watchPosition(
       async (info) => {
         const geo = await Geocoder.from(info.coords.latitude, info.coords.longitude);
 
@@ -57,31 +65,20 @@ export default function Location() {
             heading: 0,
           };
 
-          setMapLoc(loc);
           setFromLoc(loc);
         }
       },
       (error) => {
         Alert.alert('erro', error.toString());
-      }
+      },
+      options
     );
   };
 
   const handleDirectionsReady = (r: any) => {
-    mapRef.current?.fitToCoordinates(r.coordinates, {
-      edgePadding: {
-        left: 50,
-        top: 50,
-        right: 50,
-        bottom: 50,
-      },
-    });
+    setRequestDistance(r.distance);
+    setRequestTime(r.duration);
   };
-
-  useEffect(() => {
-    console.log(fromLoc?.center);
-    console.log(destinationCoords);
-  }, [fromLoc]);
 
   useEffect(() => {
     Geocoder.init(MAPS_KEY, { language: 'pt-br' });
@@ -95,7 +92,7 @@ export default function Location() {
           <MapViewDirections
             origin={fromLoc.center}
             destination={destinationCoords}
-            strokeWidth={10}
+            strokeWidth={8}
             strokeColor="#4870ff"
             apikey={MAPS_KEY}
             onReady={handleDirectionsReady}
@@ -106,6 +103,9 @@ export default function Location() {
         )}
         <Marker coordinate={destinationCoords} />
       </MapView>
+      {requestDistance && requestTime && (
+        <LocationInfo distance={requestDistance} time={requestTime} />
+      )}
     </Container>
   );
 }
