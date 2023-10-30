@@ -2,10 +2,11 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Recipes from '../screens/Recipes';
 import RecipePreparation from '../screens/RecipePreparation';
+import { RecipesType } from '../Model/Recipes';
 
 export type RootRecipeStackType = {
   Recipes: undefined;
-  RecipePreparation: undefined;
+  RecipePreparation: RecipesType;
 };
 
 const Stack = createStackNavigator<RootRecipeStackType>();

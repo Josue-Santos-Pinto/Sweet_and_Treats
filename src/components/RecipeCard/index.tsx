@@ -9,15 +9,17 @@ import {
   RecipeTitle,
 } from './styles';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { Recipes } from '../../Model/Recipes';
+import { RecipesType } from '../../Model/Recipes';
+import { useNavigation } from '@react-navigation/native';
 
 type RecipeCardProps = {
-  data: Recipes;
+  data: RecipesType;
 };
 
 export function RecipeCard({ data }: RecipeCardProps) {
+  const navigation = useNavigation();
   return (
-    <Container>
+    <Container onPress={() => navigation.navigate('RecipePreparation', data)}>
       <RecipeImgArea>
         <RecipeImg source={{ uri: data.img }} resizeMode="cover" />
       </RecipeImgArea>
