@@ -30,7 +30,7 @@ export default function CustomDrawer({ ...props }) {
   const menu = [
     { name: 'Inicio', screen: 'Home', icon: 'home' },
     { name: 'Como chegar', screen: 'Location', icon: 'map-marker' },
-    { name: 'Receitas', screen: 'Recipes', icon: 'book' },
+    { name: 'Receitas', screen: 'RecipeStack', icon: 'book' },
   ];
   const handleLogout = () => {
     const user = auth().currentUser;

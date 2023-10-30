@@ -5,11 +5,12 @@ import Location from '../screens/Location';
 import Recipes from '../screens/Recipes';
 import CustomDrawer from '../components/CustomDrawer';
 import { MainStyles } from '../theme/MainStyles';
+import { RecipeStack } from './RecipeStack';
 
 export type RootMainDrawerType = {
   Home: undefined;
   Location: undefined;
-  Recipes: undefined;
+  RecipeStack: undefined;
 };
 
 const Drawer = createDrawerNavigator<RootMainDrawerType>();
@@ -29,7 +30,7 @@ export function MainDrawer() {
     >
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="Location" component={Location} options={{ headerTransparent: true }} />
-      <Drawer.Screen name="Recipes" component={Recipes} />
+      <Drawer.Screen name="RecipeStack" component={RecipeStack} />
     </Drawer.Navigator>
   );
 }
