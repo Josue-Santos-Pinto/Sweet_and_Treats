@@ -1,6 +1,6 @@
 import { FlatList, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Container, VIDEO_HEIGHT, VideoPlayer } from './styles';
+import { Container, VIDEO_HEIGHT, VIDEO_WIDTH, VideoPlayer } from './styles';
 import { RecipeCard } from '../../components/RecipeCard';
 import getRecipesList from '../../services/DB/getRecipesList';
 import YoutubeIframe from 'react-native-youtube-iframe';
@@ -18,7 +18,12 @@ export default function RecipePreparation() {
   return (
     <Container>
       <VideoPlayer>
-        <YoutubeIframe videoId={video} height={VIDEO_HEIGHT} onReady={() => setVideoReady(true)} />
+        <YoutubeIframe
+          videoId={video}
+          width={VIDEO_WIDTH}
+          height={VIDEO_HEIGHT}
+          onReady={() => setVideoReady(true)}
+        />
         {!videoReady && <Loading />}
       </VideoPlayer>
     </Container>
