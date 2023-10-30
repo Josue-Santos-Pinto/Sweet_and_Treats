@@ -7,7 +7,6 @@ import Geocoder from 'react-native-geocoding';
 import { MAPS_KEY } from '../../helpers';
 import { Alert } from 'react-native';
 import LocationInfo from '../../components/LocationInfo';
-
 type MapLocType = {
   name?: string;
   center: {
@@ -64,7 +63,7 @@ export default function Location() {
             altitude: 0,
             heading: 0,
           };
-
+          setMapLoc(loc);
           setFromLoc(loc);
         }
       },
@@ -87,20 +86,26 @@ export default function Location() {
 
   return (
     <Container>
-      <MapView style={{ flex: 1, width: '100%' }} ref={mapRef} provider="google" camera={mapLoc}>
+      <MapView
+        style={{ flex: 1, width: '100%', paddingTop: 40 }}
+        ref={mapRef}
+        provider="google"
+        camera={mapLoc}
+      >
         {fromLoc && (
-          <MapViewDirections
-            origin={fromLoc.center}
-            destination={destinationCoords}
-            strokeWidth={8}
-            strokeColor="#4870ff"
-            apikey={MAPS_KEY}
-            onReady={handleDirectionsReady}
-          />
+          <>
+            <MapViewDirections
+              origin={fromLoc.center}
+              destination={destinationCoords}
+              strokeWidth={8}
+              strokeColor="#4870ff"
+              apikey={MAPS_KEY}
+              onReady={handleDirectionsReady}
+            />
+            <Marker coordinate={fromLoc?.center} image={require('../../assets/icons/marker.png')} />
+          </>
         )}
-        {fromLoc && (
-          <Marker coordinate={fromLoc?.center} image={require('../../assets/icons/marker.png')} />
-        )}
+
         <Marker coordinate={destinationCoords} />
       </MapView>
       {requestDistance && requestTime && (

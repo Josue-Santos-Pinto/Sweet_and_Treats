@@ -4,14 +4,12 @@ import Home from '../screens/Home';
 import Location from '../screens/Location';
 import Recipes from '../screens/Recipes';
 import CustomDrawer from '../components/CustomDrawer';
-import Notifications from '../screens/Notifications';
 import { MainStyles } from '../theme/MainStyles';
 
 export type RootMainDrawerType = {
   Home: undefined;
   Location: undefined;
   Recipes: undefined;
-  Notifications: undefined;
 };
 
 const Drawer = createDrawerNavigator<RootMainDrawerType>();
@@ -32,7 +30,6 @@ export function MainDrawer() {
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="Location" component={Location} options={{ headerTransparent: true }} />
       <Drawer.Screen name="Recipes" component={Recipes} />
-      <Drawer.Screen name="Notifications" component={Notifications} />
     </Drawer.Navigator>
   );
 }

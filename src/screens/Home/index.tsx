@@ -23,6 +23,8 @@ import CakeSVG from '../../assets/icons/cake.svg';
 import getProductsList from '../../services/DB/getProductsList';
 import { Products } from '../../Model/Products';
 import ProductItem from '../../components/ProductItem';
+import { OneSignal } from 'react-native-onesignal';
+import { NOTIFICATIONS_ID } from '../../helpers';
 
 function Home() {
   const user = useSelector((state: RootState) => state.user);
@@ -45,6 +47,17 @@ function Home() {
       if (currentUser.avatar) dispatch(setAvatar(currentUser.avatar));
     });
   }, []);
+
+  useEffect(() => {
+    OneSignal.initialize(NOTIFICATIONS_ID);
+    OneSignal.Notifications.requestPermission(true);
+    OneSignal.Notifications.addEventListener('click', onOpened);
+    return () => OneSignal.Notifications.removeEventListener('click', onOpened);
+  }, []);
+
+  const onOpened = (results: any) => {
+    console.log(results);
+  };
 
   const getProductsByCategory = async () => {
     getProductsList().then((products: any) => {

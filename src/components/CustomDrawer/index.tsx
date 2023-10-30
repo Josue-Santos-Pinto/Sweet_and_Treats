@@ -31,7 +31,6 @@ export default function CustomDrawer({ ...props }) {
     { name: 'Inicio', screen: 'Home', icon: 'home' },
     { name: 'Como chegar', screen: 'Location', icon: 'map-marker' },
     { name: 'Receitas', screen: 'Recipes', icon: 'book' },
-    { name: 'Notificações', screen: 'Notifications', icon: 'bell' },
   ];
   const handleLogout = () => {
     const user = auth().currentUser;
