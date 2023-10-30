@@ -9,13 +9,10 @@ import {
   RecipeTitle,
 } from './styles';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { Recipes } from '../../Model/Recipes';
 
 type RecipeCardProps = {
-  data: {
-    img: string;
-    title: string;
-    duration: number;
-  };
+  data: Recipes;
 };
 
 export function RecipeCard({ data }: RecipeCardProps) {
