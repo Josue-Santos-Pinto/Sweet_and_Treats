@@ -13,7 +13,7 @@ const Stack = createStackNavigator<RootRecipeStackType>();
 
 export function RecipeStack() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="Recipes" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Recipes" component={Recipes} />
       <Stack.Screen name="RecipePreparation" component={RecipePreparation} />
     </Stack.Navigator>

@@ -42,7 +42,7 @@ export default function Location() {
   };
   let options = {
     enableHighAccuracy: true,
-    timeout: 1000,
+    timeout: 6000,
     maximumAge: 0,
   };
 

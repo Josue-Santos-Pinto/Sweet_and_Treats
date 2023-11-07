@@ -20,17 +20,42 @@ export function MainDrawer() {
     <Drawer.Navigator
       drawerContent={CustomDrawer}
       screenOptions={{
-        title: '',
         headerStyle: {
-          borderBottomWidth: 0,
-          elevation: 0,
           backgroundColor: MainStyles.background.primary,
         },
       }}
     >
-      <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="Location" component={Location} options={{ headerTransparent: true }} />
-      <Drawer.Screen name="RecipeStack" component={RecipeStack} />
+      <Drawer.Screen
+        name="Home"
+        component={Home}
+        options={{
+          title: 'Sweet & Treats',
+          headerTitleStyle: {
+            fontSize: parseInt(MainStyles.text.size.title),
+            fontFamily: MainStyles.text.family.waterbrush,
+            color: MainStyles.text.color.primary,
+            textAlign: 'center',
+          },
+        }}
+      />
+      <Drawer.Screen
+        name="Location"
+        component={Location}
+        options={{ title: '', headerTransparent: true }}
+      />
+      <Drawer.Screen
+        name="RecipeStack"
+        component={RecipeStack}
+        options={{
+          title: 'Receitas',
+          headerTitleStyle: {
+            fontSize: parseInt(MainStyles.text.size.title),
+            fontFamily: MainStyles.text.family.waterbrush,
+            color: MainStyles.text.color.primary,
+            textAlign: 'center',
+          },
+        }}
+      />
     </Drawer.Navigator>
   );
 }

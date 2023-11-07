@@ -1,5 +1,5 @@
 import { Dimensions, ScrollView, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   BottomArea,
   Container,
@@ -25,9 +25,12 @@ import { Products } from '../../Model/Products';
 import ProductItem from '../../components/ProductItem';
 import { OneSignal } from 'react-native-onesignal';
 import { NOTIFICATIONS_ID } from '../../helpers';
+import { useNavigation } from '@react-navigation/native';
+import AuthHeader from '../../components/AuthHeader';
 
 function Home() {
   const user = useSelector((state: RootState) => state.user);
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const [currentMenu, setCurrentMenu] = useState(1);
