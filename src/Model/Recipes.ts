@@ -3,4 +3,15 @@ export type RecipesType = {
   title: string;
   duration: number;
   video: string;
+  ingredients: {
+    dough: string[];
+    filling: string[];
+    icings: string[];
+  };
+  preparation: {
+    dough: string[];
+    filling: string[];
+    icings: string[];
+    make: string[];
+  };
 };

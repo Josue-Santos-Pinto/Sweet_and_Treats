@@ -21,17 +21,6 @@ type MapLocType = {
 export default function Location() {
   const mapRef = useRef<MapView>(null);
 
-  const [mapLoc, setMapLoc] = useState<MapLocType>({
-    center: {
-      latitude: -22.828870998276898,
-      longitude: -42.091118816140714,
-    },
-    zoom: 12,
-    pitch: 0,
-    altitude: 0,
-    heading: 0,
-  });
-
   const [fromLoc, setFromLoc] = useState<MapLocType>();
   const [requestDistance, setRequestDistance] = useState<number>();
   const [requestTime, setRequestTime] = useState<number>();
@@ -42,7 +31,7 @@ export default function Location() {
   };
   let options = {
     enableHighAccuracy: true,
-    timeout: 6000,
+    timeout: 1000,
     maximumAge: 0,
   };
 
@@ -63,7 +52,6 @@ export default function Location() {
             altitude: 0,
             heading: 0,
           };
-          setMapLoc(loc);
           setFromLoc(loc);
         }
       },
@@ -90,7 +78,7 @@ export default function Location() {
         style={{ flex: 1, width: '100%', paddingTop: 40 }}
         ref={mapRef}
         provider="google"
-        camera={mapLoc}
+        camera={fromLoc}
       >
         {fromLoc && (
           <>
